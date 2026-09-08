@@ -7,9 +7,6 @@ spring:
     url: jdbc:sqlite:${APP_DB_PATH:./data/app.db}?journal_mode=WAL&busy_timeout=5000
     driver-class-name: org.sqlite.JDBC
     hikari:
-      # Deliberate: SQLite allows a single writer. Serialising access through one
-      # connection removes SQLITE_BUSY contention entirely, which is the right
-      # trade for this workload (a handful of small writes). See README.
       maximum-pool-size: 1
       pool-name: sqlite-pool
 

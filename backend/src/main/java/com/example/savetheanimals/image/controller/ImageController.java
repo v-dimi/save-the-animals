@@ -1,13 +1,11 @@
 package com.example.savetheanimals.image.controller;
 
 import java.net.URI;
-import java.time.Duration;
 
 import com.example.savetheanimals.image.model.ImageContent;
 import com.example.savetheanimals.image.model.ImageMetadata;
 import com.example.savetheanimals.image.service.ImageService;
 
-import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,7 +52,7 @@ public class ImageController {
                 .body(service.latest());
     }
 
-    /** The bytes of one stored image. Rows are never updated, so this is safe to cache hard. */
+    /** The bytes of one stored image. */
     @GetMapping("/{id}/content")
     ResponseEntity<byte[]> content(@PathVariable long id) {
         ImageContent image = service.content(id);

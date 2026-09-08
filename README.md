@@ -4,8 +4,10 @@ Timeboxed: 3 hours
 Notes:
 
 - No security
-- no unit/integration tests
-- no caching
+- No frontend tests
+- No caching configured
+- No ORM – hibernate might be more painful than helpful
+- Controller - Service - Repository layered
 
 Co-Developed with Claude Code Opus-5
 

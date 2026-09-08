@@ -130,8 +130,7 @@ class ImageControllerTest {
         mockMvc.perform(get("/api/images/3/content"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.IMAGE_PNG))
-                .andExpect(content().bytes(BYTES))
-                .andExpect(header().string("Cache-Control", org.hamcrest.Matchers.containsString("immutable")));
+                .andExpect(content().bytes(BYTES));
     }
 
     @Test
