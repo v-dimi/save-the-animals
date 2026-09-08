@@ -110,37 +110,52 @@ export default function App() {
   const canSave = Boolean(image?.blob) && !image.id && busy === null;
 
   return (
-    <main className="app">
-      <header>
-        <h1>Save the Animals</h1>
-        <p className="subtitle">
-          Fetch a random animal through the proxy, keep the one you like in SQLite.
-        </p>
-      </header>
+    <div className="stage">
+      <main className="dex">
+        <header className="dex__top">
+          <HealthButton />
+          <div className="dex__brand">
+            <h1>Save the Animals</h1>
+            <p className="subtitle">
+              Fetch a random animal through the proxy, keep the one you like in SQLite.
+            </p>
+          </div>
+        </header>
 
-      <section>
-        <h2>Backend</h2>
-        <HealthButton />
-      </section>
-
-      <section>
-        <h2>Fetch a picture</h2>
-        <AnimalButtons onPick={pickAnimal} busyAnimal={fetchingAnimal} disabled={busy !== null} />
-      </section>
-
-      <section>
-        <h2>Picture</h2>
-        <ImagePanel image={image} loading={fetchingAnimal !== null} />
-        <div className="control-row">
-          <button type="button" onClick={saveCurrentImage} disabled={!canSave}>
-            {busy === 'save' ? 'Saving…' : 'Save this picture'}
-          </button>
-          <button type="button" onClick={loadLastSavedImage} disabled={busy !== null}>
-            {busy === 'load' ? 'Loading…' : 'Load last saved picture'}
-          </button>
+        <div className="dex__screen">
+          <ImagePanel image={image} loading={fetchingAnimal !== null} />
         </div>
-        <StatusBanner status={status} />
-      </section>
-    </main>
+
+        <div className="dex__deck">
+          <section>
+            <h2>Fetch a picture</h2>
+            <AnimalButtons
+              onPick={pickAnimal}
+              busyAnimal={fetchingAnimal}
+              disabled={busy !== null}
+            />
+          </section>
+
+          <section>
+            <h2>Keep it</h2>
+            <div className="control-row">
+              <button
+                type="button"
+                className="key--primary"
+                onClick={saveCurrentImage}
+                disabled={!canSave}
+              >
+                {busy === 'save' ? 'Saving…' : 'Save this picture'}
+              </button>
+              <button type="button" onClick={loadLastSavedImage} disabled={busy !== null}>
+                {busy === 'load' ? 'Loading…' : 'Load last saved picture'}
+              </button>
+            </div>
+          </section>
+
+          <StatusBanner status={status} />
+        </div>
+      </main>
+    </div>
   );
 }

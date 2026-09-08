@@ -26,11 +26,23 @@ export default function HealthButton() {
     }
   }
 
+  // The lens is the button; the three lamps beside it report what came back.
   return (
-    <div className="control-row">
-      <button type="button" onClick={check} disabled={health.kind === 'checking'}>
-        Check backend health
-      </button>
+    <div className="dexlamps">
+      <button
+        type="button"
+        className="dexlamps__lens"
+        data-state={health.kind}
+        onClick={check}
+        disabled={health.kind === 'checking'}
+        title="Check backend health"
+        aria-label="Check backend health"
+      />
+      <span className="dexlamps__row" aria-hidden="true">
+        <i className="lamp lamp--red" data-lit={health.kind === 'down'} />
+        <i className="lamp lamp--amber" data-lit={health.kind === 'checking'} />
+        <i className="lamp lamp--green" data-lit={health.kind === 'up'} />
+      </span>
       <span className={`pill pill--${health.kind}`} data-testid="health-status">
         {LABELS[health.kind]}
         {health.detail ? ` — ${health.detail}` : ''}
