@@ -1,5 +1,7 @@
 # Save the Animals
 
+<img src="image.png" alt="alt text" width="400">
+
 Timeboxed: 3 hours
 Notes:
 
