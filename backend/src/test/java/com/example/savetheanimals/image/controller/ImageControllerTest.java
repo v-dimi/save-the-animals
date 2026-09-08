@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -140,6 +141,28 @@ class ImageControllerTest {
 
         mockMvc.perform(get("/api/images/4711/content"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("GET content is never stored, so a reused id can never show the old picture")
+    void getContentIsNeverStored() throws Exception {
+        when(service.content(3L)).thenReturn(new ImageContent(BYTES, "image/png"));
+
+        mockMvc.perform(get("/api/images/3/content"))
+                .andExpect(status().isOk())
+                .andExpect(header().string(HttpHeaders.CACHE_CONTROL, "no-store"))
+                .andExpect(header().doesNotExist(HttpHeaders.ETAG))
+                .andExpect(content().bytes(BYTES));
+    }
+
+    @Test
+    @DisplayName("GET /latest is never stored, so a fresh save is always seen")
+    void getLatestIsNeverStored() throws Exception {
+        when(service.latest()).thenReturn(metadata(3L, Animal.BEAR));
+
+        mockMvc.perform(get("/api/images/latest"))
+                .andExpect(status().isOk())
+                .andExpect(header().string(HttpHeaders.CACHE_CONTROL, "no-store"));
     }
 
     private static ImageMetadata metadata(long id, Animal animal) {
