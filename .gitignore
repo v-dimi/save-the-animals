@@ -1,0 +1,16 @@
+# Build output
+target/
+dist/
+node_modules/
+
+# Local SQLite database (created at runtime)
+backend/data/
+*.db
+*.db-shm
+*.db-wal
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.iml

@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: save-the-animals
+
+  datasource:
+    # APP_DB_PATH is set to /data/app.db in the container; locally it defaults to ./data/app.db.
+    url: jdbc:sqlite:${APP_DB_PATH:./data/app.db}?journal_mode=WAL&busy_timeout=5000
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      # Deliberate: SQLite allows a single writer. Serialising access through one
+      # connection removes SQLITE_BUSY contention entirely, which is the right
+      # trade for this workload (a handful of small writes). See README.
+      maximum-pool-size: 1
+      pool-name: sqlite-pool
+
+  sql:
+    init:
+      mode: always
+
+  mvc:
+    problemdetails:
+      # Spring's own exceptions (a missing parameter, a wrong method) answer with RFC 9457
+      # documents too, so the frontend only ever has to parse one error shape.
+      enabled: true
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.example.savetheanimals: INFO
